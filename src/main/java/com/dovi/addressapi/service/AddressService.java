@@ -7,11 +7,14 @@ import com.dovi.addressapi.repository.AddressRepository;
 import jakarta.annotation.Resource;
 import java.util.List;
 import java.util.Optional;
+import java.util.logging.Logger;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
 public class AddressService {
+  Logger logger = Logger.getLogger(AddressService.class.getName());
 
   AddressRepository addressRepository;
 
@@ -28,10 +31,10 @@ public class AddressService {
   }
 
   public AddressDTO getAddressById(Long addressId) {
-
+    logger.info("Getting Address by id: " + addressId );
     Optional<Address> optionalAddress = this.addressRepository.findById(addressId);
 
-    return this.addressMapper.mapToAddressDTO(optionalAddress.get());
+    return this.addressMapper.mapToAddressDTO(optionalAddress.orElseThrow());
   }
 
   public AddressDTO createAddress(AddressDTO addressDTO) {
